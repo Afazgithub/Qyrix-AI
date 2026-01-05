@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qyrix AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(120deg, #05070f, #020409);
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MAIN PANEL - SPLIT SCREEN */
+.panel {
+  width: 950px;
+  height: 600px;
+  display: flex;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 40px 140px rgba(0, 200, 255, .35);
+  background: linear-gradient(135deg, rgba(0,180,255,.15), rgba(0,80,180,.12));
+}
+
+/* LEFT SIDE - INFO */
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 25px;
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+
+/* TOP CENTER LOGOS ON LHS */
+.left .top-logos {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* TEXT INFO BELOW LOGOS */
+.left h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  color: #00f2ff;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.left p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  opacity: 0.9;
+  text-align: center;
+}
+
+/* RIGHT SIDE - Chat */
+.right {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: rgba(0,0,0,.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+/* MAIN LOGO CENTER TOP RHS */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo-container img.logo {
+  width: 180px;
+  height: auto;
+  filter: drop-shadow(0 0 20px cyan);
+}
+
+/* Chat Header */
+.chat-header {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Chat Bubbles */
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 15px;
+}
+
+.bubble {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  max-width: 75%;
+  animation: fadeUp 0.3s ease;
+  word-wrap: break-word;
+}
+
+.bot {
+  background: rgba(0,255,255,.2);
+}
+
+.user {
+  margin-left: auto;
+  background: rgba(255,255,255,.18);
+}
+
+/* INPUT AREA */
+.input-box {
+  display: flex;
+  gap: 12px;
+}
+
+.input-box input {
+  flex: 1;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(0,255,255,.45);
+  color: white;
+  outline: none;
+}
+
+.input-box button {
+  width: 56px;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  background: linear-gradient(135deg,#00f2ff,#0053b3);
+  box-shadow: 0 0 22px rgba(8, 197, 197, 0.8);
+  color: black;
+  font-size: 18px;
+}
+
+/* TYPING INDICATOR - small Qyrix logo */
+.robot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.robot img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px cyan);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="panel">
+
+  <!-- LEFT SIDE -->
+  <div class="left">
+    <!-- Top logos Grok, ChatGPT, Brain -->
+    <div class="top-logos">
+      <div>🤖</div>
+      <div>💬</div>
+      <div>🧠</div>
+    </div>
+    <!-- Description -->
+    <h2>Powered by Grok API & ChatGPT Model</h2>
+    <p><strong>Grok API:</strong> Low-latency AI streaming for fast intelligent responses.</p>
+    <p><strong>ChatGPT Model (openai/gpt-oss-20b):</strong> Conversational AI capable of understanding complex queries and generating human-like responses.</p>
+    <p>Qyrix combines these technologies to assist users in real-time, providing research, guidance, creative solutions, and friendly support with a polite, gentle, human-like personality.</p>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="right">
+    <!-- Main logo center top -->
+    <div class="logo-container">
+      <img class="logo" src="Qyrix.png" alt="Qyrix Logo">
+    </div>
+
+    <div class="chat-header">Hello! How may I assist you today?</div>
+    <div class="chat" id="chat">
+      <div class="bubble bot">Qyrix systems online, combining Grok API & ChatGPT-like AI.</div>
+    </div>
+    <div class="input-box">
+      <input id="input" placeholder="Ask Qyrix..." />
+      <button onclick="send()">➤</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+async function send(){
+  if(!input.value.trim()) return;
+
+  const text = input.value;
+  input.value = "";
+
+  chat.innerHTML += `<div class="bubble user">${text}</div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  // Typing indicator with small Qyrix logo
+  const typing = document.createElement("div");
+  typing.className = "bubble bot robot";
+  typing.innerHTML = `
+    <img src="Qyrix.png" alt="Qyrix Logo">
+    <div>Analyzing...</div>
+  `;
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
+  try{
+    const res = await fetch("http://127.0.0.1:8000/chat",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ text })
+    });
+    const data = await res.json();
+    typing.remove();
+    chat.innerHTML += `<div class="bubble bot">${data.reply}</div>`;
+  }catch{
+    typing.remove();
+    chat.innerHTML += `<div class="bubble bot">⚠️ Backend offline.</div>`;
+  }
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+input.addEventListener("keydown", e => { if(e.key==="Enter") send(); });
+</script>
+
+</body>
+</html>
